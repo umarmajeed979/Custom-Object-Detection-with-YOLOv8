@@ -1,0 +1,40 @@
+"""
+App factory. Every project in the portfolio uses this same pattern:
+build_app() wires config + logging + routes together, so main.py / run.py
+stays a two-liner regardless of which project this is.
+"""
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from app.config import settings
+from app.utils.logger import setup_logging
+from app.api.routes import router
+
+
+def create_app() -> FastAPI:
+    """Create and configure the FastAPI application."""
+
+    # Configure logging
+    setup_logging()
+
+    # Create FastAPI app
+    app = FastAPI(
+        title=settings.api_title,
+        version=settings.api_version,
+        description="Custom Object Detection API using YOLOv8",
+    )
+
+    # Configure CORS
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],  # Change to specific domains in production
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    # Register API routes
+    app.include_router(router, prefix="/api/v1")
+
+    return app

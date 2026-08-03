@@ -1,0 +1,22 @@
+# --- Web API (app/) ---
+fastapi>=0.111
+uvicorn[standard]>=0.30       # run.py / wsgi.py
+python-multipart>=0.0.9       # required by FastAPI for UploadFile (image upload endpoint)
+pydantic>=2.7
+pydantic-settings>=2.3        # app/config.py
+
+# --- Inference (app/core/, app/utils/image_utils.py) ---
+onnxruntime>=1.18             # swap for onnxruntime-gpu if training/deploying on CUDA
+numpy>=1.26
+pillow>=10.3
+
+# --- Dataset (app/data/, scripts/prepare_data.py) ---
+pyyaml>=6.0                   # app/data/loader.py reads data.yaml
+roboflow>=1.1                 # optional: scripts/prepare_data.py dataset download helper
+
+# --- Training / export (scripts/train_model.py, scripts/export_model.py, core/evaluator.py) ---
+ultralytics>=8.2              # YOLOv8 training, val, and ONNX export
+
+# --- Frontend (frontend/app.py) ---
+streamlit>=1.35
+requests>=2.32
